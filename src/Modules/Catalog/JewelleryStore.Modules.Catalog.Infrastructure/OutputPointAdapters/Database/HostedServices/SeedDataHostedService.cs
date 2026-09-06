@@ -17,7 +17,7 @@ namespace JewelleryStore.Modules.Catalog.Infrastructure.OutputPointAdapters.Data
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            using var provider = _serviceProvider.CreateScope();
+            await using var provider = _serviceProvider.CreateAsyncScope();
             var categoryRepository = provider.ServiceProvider.GetRequiredService<ICategoryRepository>();
             var productRepository = provider.ServiceProvider.GetRequiredService<IProductRepository>();
             var unitOfWork = provider.ServiceProvider.GetRequiredService<IUnitOfWork>();
