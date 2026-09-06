@@ -1,5 +1,6 @@
 using JewelleryStore.Modules.Catalog.Application.EntryPorts;
 using JewelleryStore.Modules.Catalog.Domain.Entities;
+using JewelleryStore.Modules.Catalog.Domain.Exceptions;
 using JewelleryStore.Modules.Catalog.Domain.OuputPorts;
 
 namespace JewelleryStore.Modules.Catalog.Application.UseCases.CreateCategory;
@@ -17,6 +18,9 @@ public class CreateCategoryHandler : ICreateCategoryUseCase
 
     public async Task<CreateCategoryResponseDto> HandleAsync(CreateCategoryRequestDto request)
     {
+        if (await _categoryRepository.ExistsByNameAsync(request.Name))
+            throw new CategoryNameAlreadyExistsException(request.Name);
+
         var category = new Category(request.Name, request.Description);
 
         _categoryRepository.Add(category);

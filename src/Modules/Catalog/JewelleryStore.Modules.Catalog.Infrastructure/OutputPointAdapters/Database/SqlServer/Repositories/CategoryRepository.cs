@@ -22,4 +22,12 @@ public class CategoryRepository : ICategoryRepository
     public async Task<Category?> GetByIdAsync(int id) => await _dbContext.Categories.FindAsync(id);
 
     public async Task<IEnumerable<Category>> GetAllAsync() => await _dbContext.Categories.ToListAsync();
+
+    public async Task<bool> ExistsByNameAsync(string name, int? exceptId = null)
+    {
+        var query = _dbContext.Categories.AsQueryable();
+        if (exceptId.HasValue)
+            query = query.Where(c => c.Id != exceptId.Value);
+        return await query.AnyAsync(c => c.Name == name);
+    }
 }

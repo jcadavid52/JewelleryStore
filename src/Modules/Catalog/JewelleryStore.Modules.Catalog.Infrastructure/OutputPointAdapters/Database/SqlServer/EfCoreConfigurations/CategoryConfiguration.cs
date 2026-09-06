@@ -21,6 +21,8 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         builder.Ignore(x => x.DomainEvents);
 
+        builder.HasIndex(x => x.Name).IsUnique().HasDatabaseName("IX_Categories_Name");
+
         builder.HasMany(x => x.Products)
             .WithOne(x => x.Category)
             .HasForeignKey(x => x.CategoryId);

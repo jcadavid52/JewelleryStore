@@ -20,6 +20,9 @@ public class UpdateCategoryHandler : IUpdateCategoryUseCase
         var category = await _categoryRepository.GetByIdAsync(request.Id)
             ?? throw new CategoryNotFoundException(request.Id);
 
+        if (await _categoryRepository.ExistsByNameAsync(request.Name, request.Id))
+            throw new CategoryNameAlreadyExistsException(request.Name);
+
         category.Update(request.Name, request.Description);
 
         _categoryRepository.Update(category);

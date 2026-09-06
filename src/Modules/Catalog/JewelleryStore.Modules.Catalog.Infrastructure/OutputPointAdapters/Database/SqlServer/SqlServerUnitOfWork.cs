@@ -11,6 +11,7 @@ public class SqlServerUnitOfWork : IUnitOfWork
 {
     private const string ProductNameIndexName = "IX_Products_Name";
     private const string ProductCodeIndexName = "IX_Products_Code";
+    private const string CategoryNameIndexName = "IX_Categories_Name";
 
     private readonly CatalogDbContext _dbContext;
 
@@ -42,6 +43,11 @@ public class SqlServerUnitOfWork : IUnitOfWork
 
             if (IsViolationOf(exception, ProductCodeIndexName))
                 throw new ProductCodeAlreadyExistsException(product?.Code ?? "desconocido");
+
+            var category = _dbContext.ChangeTracker.Entries<Category>().FirstOrDefault()?.Entity;
+
+            if (IsViolationOf(exception, CategoryNameIndexName))
+                throw new CategoryNameAlreadyExistsException(category?.Name ?? "desconocido");
 
             throw;
         }
