@@ -17,7 +17,21 @@
   <ItemGroup>
     <Folder Include="EntryPointAdapters\Rest\Middlewares\" />
     <Folder Include="Injections\" />
-    <Folder Include="OutputPointAdapters\Database\SqlServer\" />
+    <Folder Include="OutputPointAdapters\Database\SqlServer\EfCoreConfigurations\" />
+    <Folder Include="OutputPointAdapters\Database\SqlServer\Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+      <PrivateAssets></PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
+      <PrivateAssets></PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
