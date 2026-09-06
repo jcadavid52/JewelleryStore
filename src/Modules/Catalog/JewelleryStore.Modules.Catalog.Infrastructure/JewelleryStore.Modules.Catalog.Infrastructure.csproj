@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="EntryPointAdapters\Rest\Controllers\" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JewelleryStore.Modules.Catalog.Application\JewelleryStore.Modules.Catalog.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="EntryPointAdapters\Rest\Middlewares\" />
     <Folder Include="Injections\" />
     <Folder Include="OutputPointAdapters\Database\SqlServer\" />
