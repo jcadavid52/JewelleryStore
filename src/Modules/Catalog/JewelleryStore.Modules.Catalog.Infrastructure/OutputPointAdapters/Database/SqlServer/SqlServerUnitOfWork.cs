@@ -51,6 +51,15 @@ public class SqlServerUnitOfWork : IUnitOfWork
 
             throw;
         }
+        catch (DbUpdateException exception) when (IsForeignKeyViolation(exception))
+        {
+            var product = _dbContext.ChangeTracker.Entries<Product>().FirstOrDefault()?.Entity;
+
+            if (product is not null)
+                throw new ProductCategoryNotFoundException(product.CategoryId);
+
+            throw;
+        }
     }
 
     public async ValueTask DisposeAsync() => await _dbContext.DisposeAsync();
@@ -58,6 +67,11 @@ public class SqlServerUnitOfWork : IUnitOfWork
     private static bool IsUniqueIndexViolation(DbUpdateException exception)
     {
         return exception.InnerException is SqlException { Number: 2601 or 2627 };
+    }
+
+    private static bool IsForeignKeyViolation(DbUpdateException exception)
+    {
+        return exception.InnerException is SqlException { Number: 547 };
     }
 
     private static bool IsViolationOf(DbUpdateException exception, string indexName)

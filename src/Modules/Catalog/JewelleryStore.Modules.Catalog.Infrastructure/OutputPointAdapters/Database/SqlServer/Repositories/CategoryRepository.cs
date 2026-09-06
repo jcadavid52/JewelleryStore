@@ -30,4 +30,6 @@ public class CategoryRepository : ICategoryRepository
             query = query.Where(c => c.Id != exceptId.Value);
         return await query.AnyAsync(c => c.Name == name);
     }
+
+    public async Task<bool> ExistsAsync(int id) => await _dbContext.Categories.AnyAsync(c => c.Id == id);
 }

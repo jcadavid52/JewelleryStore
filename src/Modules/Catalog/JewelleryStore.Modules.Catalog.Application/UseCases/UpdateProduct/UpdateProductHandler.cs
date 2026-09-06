@@ -7,11 +7,13 @@ namespace JewelleryStore.Modules.Catalog.Application.UseCases.UpdateProduct;
 public class UpdateProductHandler : IUpdateProductUseCase
 {
     private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateProductHandler(IProductRepository productRepository, IUnitOfWork unitOfWork)
+    public UpdateProductHandler(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
     {
         _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
@@ -25,6 +27,9 @@ public class UpdateProductHandler : IUpdateProductUseCase
 
         if (await _productRepository.ExistsByCodeAsync(request.Code, request.Id))
             throw new ProductCodeAlreadyExistsException(request.Code);
+
+        if (!await _categoryRepository.ExistsAsync(request.CategoryId))
+            throw new ProductCategoryNotFoundException(request.CategoryId);
 
         product.Update(
             request.Name,

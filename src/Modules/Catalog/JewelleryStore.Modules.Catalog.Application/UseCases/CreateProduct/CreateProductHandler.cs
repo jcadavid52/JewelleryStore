@@ -8,11 +8,13 @@ namespace JewelleryStore.Modules.Catalog.Application.UseCases.CreateProduct;
 public class CreateProductHandler : ICreateProductUseCase
 {
     private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateProductHandler(IProductRepository productRepository, IUnitOfWork unitOfWork)
+    public CreateProductHandler(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
     {
         _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
@@ -23,6 +25,9 @@ public class CreateProductHandler : ICreateProductUseCase
 
         if (await _productRepository.ExistsByCodeAsync(request.Code))
             throw new ProductCodeAlreadyExistsException(request.Code);
+
+        if (!await _categoryRepository.ExistsAsync(request.CategoryId))
+            throw new ProductCategoryNotFoundException(request.CategoryId);
 
         var product = new Product(
             request.Name,
