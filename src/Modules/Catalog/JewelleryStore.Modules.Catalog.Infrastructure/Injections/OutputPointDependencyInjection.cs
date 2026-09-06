@@ -9,7 +9,11 @@ namespace JewelleryStore.Modules.Catalog.Infrastructure.Injections;
 
 public static class OutputPointDependencyInjection
 {
-    public static IServiceCollection AddCatalogPersistence(this IServiceCollection services, string connectionString, bool applyMigrations)
+public static IServiceCollection AddCatalogPersistence(
+        this IServiceCollection services,
+        string connectionString,
+        bool applyMigrations = false,
+        bool seedDataOnStartup = false)
     {
         services.AddDbContext<CatalogDbContext>(options => options.UseSqlServer(connectionString));
         services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -19,6 +23,11 @@ public static class OutputPointDependencyInjection
         if (applyMigrations)
         {
             services.AddHostedService<AutomaticMigrationsHostedService>();
+        }
+
+        if (seedDataOnStartup)
+        {
+            services.AddHostedService<SeedDataHostedService>();
         }
 
         return services;
