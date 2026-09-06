@@ -11,17 +11,38 @@ namespace JewelleryStore.Modules.Catalog.Domain.Entities
 
         public Category(string name, string description)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("El nombre es obligatorio", nameof(name));
-
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("La descripción es obligatoria", nameof(description));
+            ValidateName(name);
+            ValidateDescription(description);
 
             Name = name;
             Description = description;
 
             var categoryCreatedEvent = new CategoryCreated(Id, name, description);
             AddDomainEvent(categoryCreatedEvent);
+        }
+
+        public void Update(string name, string description)
+        {
+            ValidateName(name);
+            ValidateDescription(description);
+
+            Name = name;
+            Description = description;
+
+            var categoryUpdatedEvent = new CategoryUpdated(Id, name, description);
+            AddDomainEvent(categoryUpdatedEvent);
+        }
+
+        private static void ValidateName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("El nombre es obligatorio", nameof(name));
+        }
+
+        private static void ValidateDescription(string description)
+        {
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException("La descripción es obligatoria", nameof(description));
         }
     }
 }
