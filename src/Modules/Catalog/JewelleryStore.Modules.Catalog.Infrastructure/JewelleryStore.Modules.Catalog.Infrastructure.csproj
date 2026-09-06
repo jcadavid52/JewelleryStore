@@ -19,6 +19,7 @@
     <Folder Include="Injections\" />
     <Folder Include="OutputPointAdapters\Database\Seeding\" />
     <Folder Include="OutputPointAdapters\Database\SqlServer\EfCoreConfigurations\" />
+    <Folder Include="OutputPointAdapters\Database\SqlServer\Migrations\" />
     <Folder Include="OutputPointAdapters\Database\SqlServer\Repositories\" />
   </ItemGroup>
 
