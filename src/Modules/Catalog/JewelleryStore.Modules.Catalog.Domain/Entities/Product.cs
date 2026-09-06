@@ -1,4 +1,5 @@
 ﻿using JewelleryStore.Modules.Catalog.Domain.Abstractions;
+using JewelleryStore.Modules.Catalog.Domain.Events;
 
 namespace JewelleryStore.Modules.Catalog.Domain.Entities
 {
@@ -45,6 +46,17 @@ namespace JewelleryStore.Modules.Catalog.Domain.Entities
             Care = care;
             Price = price;
             CategoryId = categoryId;
+
+            var productCreatedEvent = new ProductCreated(
+                Id,
+                name,
+                description,
+                code,
+                care,
+                price,
+                categoryId);
+
+            AddDomainEvent(productCreatedEvent);
         }
     }
 }
