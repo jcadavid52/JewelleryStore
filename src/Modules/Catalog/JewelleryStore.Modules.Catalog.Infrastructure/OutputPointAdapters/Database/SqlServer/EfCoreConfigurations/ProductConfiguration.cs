@@ -39,7 +39,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(x => x.Code).IsUnique();
+        builder.HasIndex(x => x.Name).IsUnique().HasDatabaseName("IX_Products_Name");
+        builder.HasIndex(x => x.Code).IsUnique().HasDatabaseName("IX_Products_Code");
         builder.HasIndex(x => x.CategoryId);
     }
 }

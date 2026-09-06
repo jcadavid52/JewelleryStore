@@ -22,4 +22,20 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetByIdAsync(Guid id) => await _dbContext.Products.FindAsync(id);
 
     public async Task<IEnumerable<Product>> GetAllAsync() => await _dbContext.Products.ToListAsync();
+
+    public async Task<bool> ExistsByNameAsync(string name, Guid? exceptId = null)
+    {
+        var query = _dbContext.Products.AsQueryable();
+        if (exceptId.HasValue)
+            query = query.Where(p => p.Id != exceptId.Value);
+        return await query.AnyAsync(p => p.Name == name);
+    }
+
+    public async Task<bool> ExistsByCodeAsync(string code, Guid? exceptId = null)
+    {
+        var query = _dbContext.Products.AsQueryable();
+        if (exceptId.HasValue)
+            query = query.Where(p => p.Id != exceptId.Value);
+        return await query.AnyAsync(p => p.Code == code);
+    }
 }

@@ -1,5 +1,6 @@
 using JewelleryStore.Modules.Catalog.Application.EntryPorts;
 using JewelleryStore.Modules.Catalog.Domain.Entities;
+using JewelleryStore.Modules.Catalog.Domain.Exceptions;
 using JewelleryStore.Modules.Catalog.Domain.OuputPorts;
 
 namespace JewelleryStore.Modules.Catalog.Application.UseCases.CreateProduct;
@@ -17,6 +18,12 @@ public class CreateProductHandler : ICreateProductUseCase
 
     public async Task<CreateProductResponseDto> HandleAsync(CreateProductRequestDto request)
     {
+        if (await _productRepository.ExistsByNameAsync(request.Name))
+            throw new ProductNameAlreadyExistsException(request.Name);
+
+        if (await _productRepository.ExistsByCodeAsync(request.Code))
+            throw new ProductCodeAlreadyExistsException(request.Code);
+
         var product = new Product(
             request.Name,
             request.Description,

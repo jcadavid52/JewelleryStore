@@ -77,6 +77,7 @@ public class ExceptionHandlingMiddleware
         {
             400 => "Bad Request",
             404 => "Not Found",
+            409 => "Conflict",
             _ => "Internal Server Error"
         };
     }

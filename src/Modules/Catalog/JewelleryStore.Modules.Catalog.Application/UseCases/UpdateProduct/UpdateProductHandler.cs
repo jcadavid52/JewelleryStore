@@ -20,6 +20,12 @@ public class UpdateProductHandler : IUpdateProductUseCase
         var product = await _productRepository.GetByIdAsync(request.Id)
             ?? throw new ProductNotFoundException(request.Id);
 
+        if (await _productRepository.ExistsByNameAsync(request.Name, request.Id))
+            throw new ProductNameAlreadyExistsException(request.Name);
+
+        if (await _productRepository.ExistsByCodeAsync(request.Code, request.Id))
+            throw new ProductCodeAlreadyExistsException(request.Code);
+
         product.Update(
             request.Name,
             request.Description,
