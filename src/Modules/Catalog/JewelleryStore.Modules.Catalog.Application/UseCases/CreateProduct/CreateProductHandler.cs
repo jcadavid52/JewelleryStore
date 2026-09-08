@@ -1,3 +1,4 @@
+using FluentValidation;
 using JewelleryStore.Modules.Catalog.Application.EntryPorts;
 using JewelleryStore.Modules.Catalog.Domain.Entities;
 using JewelleryStore.Modules.Catalog.Domain.Exceptions;
@@ -9,17 +10,27 @@ public class CreateProductHandler : ICreateProductUseCase
 {
     private readonly IProductRepository _productRepository;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IValidator<CreateProductRequestDto> _validator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateProductHandler(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
+    public CreateProductHandler(
+        IProductRepository productRepository,
+        ICategoryRepository categoryRepository,
+        IValidator<CreateProductRequestDto> validator,
+        IUnitOfWork unitOfWork)
     {
         _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
     public async Task<CreateProductResponseDto> HandleAsync(CreateProductRequestDto request)
     {
+        var validationResult = _validator.Validate(request);
+        if (!validationResult.IsValid)
+            throw validationResult.ToRequestValidationException();
+
         if (await _productRepository.ExistsByNameAsync(request.Name))
             throw new ProductNameAlreadyExistsException(request.Name);
 

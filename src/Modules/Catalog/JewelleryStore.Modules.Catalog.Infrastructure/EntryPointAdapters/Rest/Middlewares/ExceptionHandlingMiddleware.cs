@@ -50,6 +50,9 @@ public class ExceptionHandlingMiddleware
             Instance = context.Request.Path
         };
 
+        if (exception is RequestValidationException validationException)
+            problemDetails.Extensions["errors"] = validationException.Errors;
+
         var json = JsonSerializer.Serialize(
             problemDetails,
             new JsonSerializerOptions

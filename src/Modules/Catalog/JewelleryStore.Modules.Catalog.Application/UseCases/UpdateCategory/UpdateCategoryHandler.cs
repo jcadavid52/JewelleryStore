@@ -1,3 +1,4 @@
+using FluentValidation;
 using JewelleryStore.Modules.Catalog.Application.EntryPorts;
 using JewelleryStore.Modules.Catalog.Domain.Exceptions;
 using JewelleryStore.Modules.Catalog.Domain.OuputPorts;
@@ -7,16 +8,25 @@ namespace JewelleryStore.Modules.Catalog.Application.UseCases.UpdateCategory;
 public class UpdateCategoryHandler : IUpdateCategoryUseCase
 {
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IValidator<UpdateCategoryRequestDto> _validator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateCategoryHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
+    public UpdateCategoryHandler(
+        ICategoryRepository categoryRepository,
+        IValidator<UpdateCategoryRequestDto> validator,
+        IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
     public async Task HandleAsync(UpdateCategoryRequestDto request)
     {
+        var validationResult = _validator.Validate(request);
+        if (!validationResult.IsValid)
+            throw validationResult.ToRequestValidationException();
+
         var category = await _categoryRepository.GetByIdAsync(request.Id)
             ?? throw new CategoryNotFoundException(request.Id);
 
