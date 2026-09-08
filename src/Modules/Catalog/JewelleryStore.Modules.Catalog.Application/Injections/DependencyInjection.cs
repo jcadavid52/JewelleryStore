@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using JewelleryStore.Modules.Catalog.Application.EntryPorts;
 using JewelleryStore.Modules.Catalog.Application.UseCases.CreateCategory;
@@ -15,6 +16,8 @@ public static class DependencyInjection
         services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryHandler>();
         services.AddScoped<ICreateProductUseCase, CreateProductHandler>();
         services.AddScoped<IUpdateProductUseCase, UpdateProductHandler>();
+
+        services.AddValidatorsFromAssemblyContaining<CreateProductRequestDtoValidator>();
 
         return services;
     }

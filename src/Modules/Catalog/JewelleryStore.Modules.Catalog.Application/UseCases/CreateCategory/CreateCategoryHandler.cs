@@ -1,3 +1,4 @@
+using FluentValidation;
 using JewelleryStore.Modules.Catalog.Application.EntryPorts;
 using JewelleryStore.Modules.Catalog.Domain.Entities;
 using JewelleryStore.Modules.Catalog.Domain.Exceptions;
@@ -8,16 +9,25 @@ namespace JewelleryStore.Modules.Catalog.Application.UseCases.CreateCategory;
 public class CreateCategoryHandler : ICreateCategoryUseCase
 {
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IValidator<CreateCategoryRequestDto> _validator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateCategoryHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
+    public CreateCategoryHandler(
+        ICategoryRepository categoryRepository,
+        IValidator<CreateCategoryRequestDto> validator,
+        IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+        _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
     public async Task<CreateCategoryResponseDto> HandleAsync(CreateCategoryRequestDto request)
     {
+        var validationResult = _validator.Validate(request);
+        if (!validationResult.IsValid)
+            throw validationResult.ToRequestValidationException();
+
         if (await _categoryRepository.ExistsByNameAsync(request.Name))
             throw new CategoryNameAlreadyExistsException(request.Name);
 
