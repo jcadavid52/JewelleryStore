@@ -21,6 +21,7 @@ builder.Services.AddCatalogPersistence(
 
 var app = builder.Build();
 
+app.UseCatalogSecurity();
 app.UseCatalogExceptionHandling();
 app.MapCatalogOpenApi();
 app.MapControllers();

@@ -30,6 +30,11 @@ public static class EntryPointDependencyInjection
         return app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 
+    public static IApplicationBuilder UseCatalogSecurity(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<SecurityMiddleware>();
+    }
+
     public static IEndpointRouteBuilder MapCatalogOpenApi(this IEndpointRouteBuilder endpoints)
     {
         var environment = endpoints.ServiceProvider.GetService<IWebHostEnvironment>();
