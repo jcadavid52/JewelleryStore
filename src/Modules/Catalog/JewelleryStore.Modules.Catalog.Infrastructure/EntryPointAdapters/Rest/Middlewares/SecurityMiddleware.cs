@@ -24,8 +24,8 @@ public class SecurityMiddleware
     {
         if (await ValidateRequestAsync(context))
         {
-            await _next(context);
             AddSecurityHeaders(context);
+            await _next(context);
         }
     }
 
