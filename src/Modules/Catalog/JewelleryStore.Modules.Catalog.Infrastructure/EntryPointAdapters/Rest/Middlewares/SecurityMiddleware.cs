@@ -24,10 +24,14 @@ public class SecurityMiddleware
     {
         if (await ValidateRequestAsync(context))
         {
-            AddSecurityHeaders(context);
+            if (!IsDocumentationRequest(context.Request.Path))
+                AddSecurityHeaders(context);
             await _next(context);
         }
     }
+
+    private static bool IsDocumentationRequest(PathString path) =>
+        path.StartsWithSegments("/scalar") || path.StartsWithSegments("/openapi");
 
     private static async Task<bool> ValidateRequestAsync(HttpContext context)
     {
