@@ -21,22 +21,22 @@ public class UpdateCategoryHandler : IUpdateCategoryUseCase
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
-    public async Task HandleAsync(UpdateCategoryRequestDto request)
+    public async Task HandleAsync(UpdateCategoryRequestDto request, CancellationToken cancellationToken = default)
     {
-        var validationResult = _validator.Validate(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw validationResult.ToRequestValidationException();
 
-        var category = await _categoryRepository.GetByIdAsync(request.Id)
+        var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken)
             ?? throw new CategoryNotFoundException(request.Id);
 
-        if (await _categoryRepository.ExistsByNameAsync(request.Name, request.Id))
+        if (await _categoryRepository.ExistsByNameAsync(request.Name, request.Id, cancellationToken))
             throw new CategoryNameAlreadyExistsException(request.Name);
 
         category.Update(request.Name, request.Description);
 
         _categoryRepository.Update(category);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

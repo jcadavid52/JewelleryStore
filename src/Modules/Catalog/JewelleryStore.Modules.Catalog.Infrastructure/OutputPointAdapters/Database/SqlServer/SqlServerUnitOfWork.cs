@@ -20,11 +20,11 @@ public class SqlServerUnitOfWork : IUnitOfWork
         _dbContext = dbContext;
     }
 
-    public async Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _dbContext.SaveChangesAsync(CancellationToken.None);
+            var result = await _dbContext.SaveChangesAsync(cancellationToken);
 
             foreach (var entry in _dbContext.ChangeTracker.Entries<AggregateRoot<Guid>>())
                 entry.Entity.ClearDomainEvents();

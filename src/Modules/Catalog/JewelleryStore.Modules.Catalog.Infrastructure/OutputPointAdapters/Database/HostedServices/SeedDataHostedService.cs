@@ -22,7 +22,7 @@ namespace JewelleryStore.Modules.Catalog.Infrastructure.OutputPointAdapters.Data
             var productRepository = provider.ServiceProvider.GetRequiredService<IProductRepository>();
             var unitOfWork = provider.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-            var existing = await categoryRepository.GetAllAsync();
+            var existing = await categoryRepository.GetAllAsync(cancellationToken);
             if (existing.Any())
                 return;
 
@@ -34,7 +34,7 @@ namespace JewelleryStore.Modules.Catalog.Infrastructure.OutputPointAdapters.Data
                 categories.Add(entity);
             }
 
-            await unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             var product = CatalogSeedData.Product;
             var productCategory = categories.First(x => x.Name == product.CategoryName);
@@ -47,7 +47,7 @@ namespace JewelleryStore.Modules.Catalog.Infrastructure.OutputPointAdapters.Data
                 product.Price,
                 productCategory.Id));
 
-            await unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

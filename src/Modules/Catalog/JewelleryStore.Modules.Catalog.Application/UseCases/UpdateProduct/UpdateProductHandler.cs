@@ -24,22 +24,22 @@ public class UpdateProductHandler : IUpdateProductUseCase
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
-    public async Task HandleAsync(UpdateProductRequestDto request)
+    public async Task HandleAsync(UpdateProductRequestDto request, CancellationToken cancellationToken = default)
     {
-        var validationResult = _validator.Validate(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw validationResult.ToRequestValidationException();
 
-        var product = await _productRepository.GetByIdAsync(request.Id)
+        var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken)
             ?? throw new ProductNotFoundException(request.Id);
 
-        if (await _productRepository.ExistsByNameAsync(request.Name, request.Id))
+        if (await _productRepository.ExistsByNameAsync(request.Name, request.Id, cancellationToken))
             throw new ProductNameAlreadyExistsException(request.Name);
 
-        if (await _productRepository.ExistsByCodeAsync(request.Code, request.Id))
+        if (await _productRepository.ExistsByCodeAsync(request.Code, request.Id, cancellationToken))
             throw new ProductCodeAlreadyExistsException(request.Code);
 
-        if (!await _categoryRepository.ExistsAsync(request.CategoryId))
+        if (!await _categoryRepository.ExistsAsync(request.CategoryId, cancellationToken))
             throw new ProductCategoryNotFoundException(request.CategoryId);
 
         product.Update(
@@ -52,6 +52,6 @@ public class UpdateProductHandler : IUpdateProductUseCase
 
         _productRepository.Update(product);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

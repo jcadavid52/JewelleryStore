@@ -4,5 +4,5 @@ namespace JewelleryStore.Modules.Catalog.Application.EntryPorts;
 
 public interface ICreateProductUseCase
 {
-    Task<CreateProductResponseDto> HandleAsync(CreateProductRequestDto request);
+    Task<CreateProductResponseDto> HandleAsync(CreateProductRequestDto request, CancellationToken cancellationToken = default);
 }

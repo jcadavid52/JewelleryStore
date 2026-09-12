@@ -31,11 +31,14 @@ public class ExceptionHandlingMiddleware
 
     private async Task HandleAsync(HttpContext context, Exception exception)
     {
+        if (exception is OperationCanceledException && context.RequestAborted.IsCancellationRequested)
+            return;
+
         var (statusCode, logLevel) = ResolveStatus(exception);
 
         if (logLevel == LogLevel.Error)
             _logger.LogError(exception, "Ocurrió un error no controlado al procesar la solicitud");
-        else
+        else if (logLevel == LogLevel.Warning)
             _logger.LogWarning(exception, "Se controló una excepción de dominio durante la solicitud");
 
         context.Response.StatusCode = statusCode;
@@ -68,6 +71,7 @@ public class ExceptionHandlingMiddleware
     {
         return exception switch
         {
+            OperationCanceledException => (499, LogLevel.Debug),
             DomainException domainException => (domainException.StatusCode, LogLevel.Warning),
             ArgumentException => (400, LogLevel.Warning),
             _ => (500, LogLevel.Error)
@@ -81,6 +85,7 @@ public class ExceptionHandlingMiddleware
             400 => "Bad Request",
             404 => "Not Found",
             409 => "Conflict",
+            499 => "Client Closed Request",
             _ => "Internal Server Error"
         };
     }

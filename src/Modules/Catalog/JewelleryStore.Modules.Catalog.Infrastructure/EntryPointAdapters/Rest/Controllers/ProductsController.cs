@@ -16,9 +16,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateProductRequestDto request)
+    public async Task<IActionResult> Create([FromBody] CreateProductRequestDto request, CancellationToken cancellationToken)
     {
-        var result = await _createProductUseCase.HandleAsync(request);
+        var result = await _createProductUseCase.HandleAsync(request, cancellationToken);
         return CreatedAtAction(nameof(Create), new { id = result.Id }, result);
     }
 }
