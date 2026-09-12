@@ -22,20 +22,20 @@ public class CreateCategoryHandler : ICreateCategoryUseCase
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
-    public async Task<CreateCategoryResponseDto> HandleAsync(CreateCategoryRequestDto request)
+    public async Task<CreateCategoryResponseDto> HandleAsync(CreateCategoryRequestDto request, CancellationToken cancellationToken = default)
     {
-        var validationResult = _validator.Validate(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw validationResult.ToRequestValidationException();
 
-        if (await _categoryRepository.ExistsByNameAsync(request.Name))
+        if (await _categoryRepository.ExistsByNameAsync(request.Name, cancellationToken: cancellationToken))
             throw new CategoryNameAlreadyExistsException(request.Name);
 
         var category = new Category(request.Name, request.Description);
 
         _categoryRepository.Add(category);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new CreateCategoryResponseDto(category.Id, category.Name, category.Description);
     }

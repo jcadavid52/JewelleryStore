@@ -4,5 +4,5 @@ namespace JewelleryStore.Modules.Catalog.Application.EntryPorts;
 
 public interface ICreateCategoryUseCase
 {
-    Task<CreateCategoryResponseDto> HandleAsync(CreateCategoryRequestDto request);
+    Task<CreateCategoryResponseDto> HandleAsync(CreateCategoryRequestDto request, CancellationToken cancellationToken = default);
 }

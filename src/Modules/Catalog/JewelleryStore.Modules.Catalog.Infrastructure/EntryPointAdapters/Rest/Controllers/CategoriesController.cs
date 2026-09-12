@@ -16,9 +16,9 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryRequestDto request)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryRequestDto request, CancellationToken cancellationToken)
     {
-        var result = await _createCategoryUseCase.HandleAsync(request);
+        var result = await _createCategoryUseCase.HandleAsync(request, cancellationToken);
         return CreatedAtAction(nameof(Create), new { id = result.Id }, result);
     }
 }

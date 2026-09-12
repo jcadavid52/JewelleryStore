@@ -4,5 +4,5 @@ namespace JewelleryStore.Modules.Catalog.Application.EntryPorts;
 
 public interface IUpdateProductUseCase
 {
-    Task HandleAsync(UpdateProductRequestDto request);
+    Task HandleAsync(UpdateProductRequestDto request, CancellationToken cancellationToken = default);
 }

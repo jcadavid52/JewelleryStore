@@ -19,23 +19,25 @@ public class ProductRepository : IProductRepository
 
     public void Remove(Product entity) => _dbContext.Products.Remove(entity);
 
-    public async Task<Product?> GetByIdAsync(Guid id) => await _dbContext.Products.FindAsync(id);
+    public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        await _dbContext.Products.FindAsync(new object[] { id }, cancellationToken);
 
-    public async Task<IEnumerable<Product>> GetAllAsync() => await _dbContext.Products.ToListAsync();
+    public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        await _dbContext.Products.ToListAsync(cancellationToken);
 
-    public async Task<bool> ExistsByNameAsync(string name, Guid? exceptId = null)
+    public async Task<bool> ExistsByNameAsync(string name, Guid? exceptId = null, CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Products.AsQueryable();
         if (exceptId.HasValue)
             query = query.Where(p => p.Id != exceptId.Value);
-        return await query.AnyAsync(p => p.Name == name);
+        return await query.AnyAsync(p => p.Name == name, cancellationToken);
     }
 
-    public async Task<bool> ExistsByCodeAsync(string code, Guid? exceptId = null)
+    public async Task<bool> ExistsByCodeAsync(string code, Guid? exceptId = null, CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Products.AsQueryable();
         if (exceptId.HasValue)
             query = query.Where(p => p.Id != exceptId.Value);
-        return await query.AnyAsync(p => p.Code == code);
+        return await query.AnyAsync(p => p.Code == code, cancellationToken);
     }
 }

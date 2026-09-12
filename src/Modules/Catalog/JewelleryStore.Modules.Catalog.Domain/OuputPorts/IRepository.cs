@@ -10,8 +10,8 @@ namespace JewelleryStore.Modules.Catalog.Domain.OuputPorts
 
         void Remove(TEntity entity);
 
-        Task<TEntity?> GetByIdAsync(TId id);
+        Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
     }
 }

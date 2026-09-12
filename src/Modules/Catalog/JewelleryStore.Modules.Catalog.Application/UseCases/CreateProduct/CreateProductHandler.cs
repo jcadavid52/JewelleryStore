@@ -25,19 +25,19 @@ public class CreateProductHandler : ICreateProductUseCase
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
-    public async Task<CreateProductResponseDto> HandleAsync(CreateProductRequestDto request)
+    public async Task<CreateProductResponseDto> HandleAsync(CreateProductRequestDto request, CancellationToken cancellationToken = default)
     {
-        var validationResult = _validator.Validate(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw validationResult.ToRequestValidationException();
 
-        if (await _productRepository.ExistsByNameAsync(request.Name))
+        if (await _productRepository.ExistsByNameAsync(request.Name, cancellationToken: cancellationToken))
             throw new ProductNameAlreadyExistsException(request.Name);
 
-        if (await _productRepository.ExistsByCodeAsync(request.Code))
+        if (await _productRepository.ExistsByCodeAsync(request.Code, cancellationToken: cancellationToken))
             throw new ProductCodeAlreadyExistsException(request.Code);
 
-        if (!await _categoryRepository.ExistsAsync(request.CategoryId))
+        if (!await _categoryRepository.ExistsAsync(request.CategoryId, cancellationToken))
             throw new ProductCategoryNotFoundException(request.CategoryId);
 
         var product = new Product(
@@ -50,7 +50,7 @@ public class CreateProductHandler : ICreateProductUseCase
 
         _productRepository.Add(product);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new CreateProductResponseDto(
             product.Id,

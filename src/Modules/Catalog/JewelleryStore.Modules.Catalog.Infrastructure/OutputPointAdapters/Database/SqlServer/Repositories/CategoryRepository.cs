@@ -19,17 +19,20 @@ public class CategoryRepository : ICategoryRepository
 
     public void Remove(Category entity) => _dbContext.Categories.Remove(entity);
 
-    public async Task<Category?> GetByIdAsync(int id) => await _dbContext.Categories.FindAsync(id);
+    public async Task<Category?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
+        await _dbContext.Categories.FindAsync(new object[] { id }, cancellationToken);
 
-    public async Task<IEnumerable<Category>> GetAllAsync() => await _dbContext.Categories.ToListAsync();
+    public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        await _dbContext.Categories.ToListAsync(cancellationToken);
 
-    public async Task<bool> ExistsByNameAsync(string name, int? exceptId = null)
+    public async Task<bool> ExistsByNameAsync(string name, int? exceptId = null, CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Categories.AsQueryable();
         if (exceptId.HasValue)
             query = query.Where(c => c.Id != exceptId.Value);
-        return await query.AnyAsync(c => c.Name == name);
+        return await query.AnyAsync(c => c.Name == name, cancellationToken);
     }
 
-    public async Task<bool> ExistsAsync(int id) => await _dbContext.Categories.AnyAsync(c => c.Id == id);
+    public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default) =>
+        await _dbContext.Categories.AnyAsync(c => c.Id == id, cancellationToken);
 }
