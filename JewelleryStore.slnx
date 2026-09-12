@@ -1,11 +1,19 @@
 <Solution>
-  <Project Path="src/JewelleryStore.Runner/JewelleryStore.Runner.csproj" Id="8759cc90-ce6a-42b1-b9bc-b3233ab30a22" />
-  <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Application/JewelleryStore.Modules.Catalog.Application.csproj" Id="b80a8a71-f130-42dc-aed7-4375d10e561b" />
-  <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Contracts/JewelleryStore.Modules.Catalog.Contracts.csproj" Id="5a08adcd-169d-45a6-8b90-3b25849e0825" />
-  <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Domain/JewelleryStore.Modules.Catalog.Domain.csproj" Id="c1b0d0fd-6b3c-4044-b6bb-8cd982ae1b28" />
-  <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Infrastructure/JewelleryStore.Modules.Catalog.Infrastructure.csproj" Id="005a1095-01e6-4fb5-bce5-e369d7d2f3bc" />
-  <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Application/JewelleryStore.Modules.Orders.Application.csproj" Id="38b0cfe9-0590-4af2-b867-38f7d3c66291" />
-  <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Contracts/JewelleryStore.Modules.Orders.Contracts.csproj" Id="75f92e6e-2736-417b-9e9f-0987db2d6398" />
-  <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Domain/JewelleryStore.Modules.Orders.Domain.csproj" Id="26b54435-52e5-4e9a-acee-f0c28634c21d" />
-  <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Infrastructure/JewelleryStore.Modules.Orders.Infrastructure.csproj" Id="9bf3de95-355a-48f7-a407-7759a3ba84e1" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/JewelleryStore.Runner/">
+    <Project Path="src/JewelleryStore.Runner/JewelleryStore.Runner.csproj" Id="8759cc90-ce6a-42b1-b9bc-b3233ab30a22" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Catalog/">
+    <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Application/JewelleryStore.Modules.Catalog.Application.csproj" Id="b80a8a71-f130-42dc-aed7-4375d10e561b" />
+    <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Contracts/JewelleryStore.Modules.Catalog.Contracts.csproj" Id="5a08adcd-169d-45a6-8b90-3b25849e0825" />
+    <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Domain/JewelleryStore.Modules.Catalog.Domain.csproj" Id="c1b0d0fd-6b3c-4044-b6bb-8cd982ae1b28" />
+    <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Infrastructure/JewelleryStore.Modules.Catalog.Infrastructure.csproj" Id="005a1095-01e6-4fb5-bce5-e369d7d2f3bc" />
+  </Folder>
+  <Folder Name="/src/Modules/Orders/">
+    <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Application/JewelleryStore.Modules.Orders.Application.csproj" Id="38b0cfe9-0590-4af2-b867-38f7d3c66291" />
+    <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Contracts/JewelleryStore.Modules.Orders.Contracts.csproj" Id="75f92e6e-2736-417b-9e9f-0987db2d6398" />
+    <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Domain/JewelleryStore.Modules.Orders.Domain.csproj" Id="26b54435-52e5-4e9a-acee-f0c28634c21d" />
+    <Project Path="src/Modules/Orders/JewelleryStore.Modules.Orders.Infrastructure/JewelleryStore.Modules.Orders.Infrastructure.csproj" Id="9bf3de95-355a-48f7-a407-7759a3ba84e1" />
+  </Folder>
 </Solution>
