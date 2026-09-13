@@ -11,13 +11,16 @@ public class CategoriesController : ControllerBase
 {
     private readonly ICreateCategoryUseCase _createCategoryUseCase;
     private readonly IGetAllCategoryUseCase _getAllCategoryUseCase;
+    private readonly IGetCategoryByIdUseCase _getCategoryByIdUseCase;
 
     public CategoriesController(
         ICreateCategoryUseCase createCategoryUseCase,
-        IGetAllCategoryUseCase getAllCategoryUseCase)
+        IGetAllCategoryUseCase getAllCategoryUseCase,
+        IGetCategoryByIdUseCase getCategoryByIdUseCase)
     {
         _createCategoryUseCase = createCategoryUseCase;
         _getAllCategoryUseCase = getAllCategoryUseCase;
+        _getCategoryByIdUseCase = getCategoryByIdUseCase;
     }
 
     [HttpPost]
@@ -36,6 +39,13 @@ public class CategoriesController : ControllerBase
     {
         var query = new GetAllCategoryQueryDto(searchTerm, pageNumber, pageSize);
         var result = await _getAllCategoryUseCase.HandleAsync(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
+    {
+        var result = await _getCategoryByIdUseCase.HandleAsync(id, cancellationToken);
         return Ok(result);
     }
 }

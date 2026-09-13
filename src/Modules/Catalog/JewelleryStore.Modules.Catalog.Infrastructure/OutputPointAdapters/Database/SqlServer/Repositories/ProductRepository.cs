@@ -52,6 +52,11 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
        await _dbContext.Products.FindAsync(new object[] { id }, cancellationToken);
 
+    public async Task<Product?> GetByIdWithCategoryAsync(Guid id, CancellationToken cancellationToken = default) =>
+        await _dbContext.Products
+            .Include(p => p.Category)
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+
     public async Task<bool> ExistsByNameAsync(string name, Guid? exceptId = null, CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Products.AsQueryable();

@@ -4,6 +4,8 @@ namespace JewelleryStore.Modules.Catalog.Domain.OuputPorts
 {
     public interface IProductRepository : IRepository<Product, Guid>
     {
+        Task<Product?> GetByIdWithCategoryAsync(Guid id, CancellationToken cancellationToken = default);
+
         Task<(IEnumerable<Product> Products, int TotalCount)> GetAllWithFiltersAsync(
             string? searchTerm = null,
             int? categoryId = null,
