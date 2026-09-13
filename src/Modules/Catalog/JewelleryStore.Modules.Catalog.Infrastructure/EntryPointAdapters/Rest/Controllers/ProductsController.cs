@@ -11,13 +11,16 @@ public class ProductsController : ControllerBase
 {
     private readonly ICreateProductUseCase _createProductUseCase;
     private readonly IGetAllCatalogUseCase _getAllCatalogUseCase;
+    private readonly IGetProductByIdUseCase _getProductByIdUseCase;
 
     public ProductsController(
         ICreateProductUseCase createProductUseCase,
-        IGetAllCatalogUseCase getAllCatalogUseCase)
+        IGetAllCatalogUseCase getAllCatalogUseCase,
+        IGetProductByIdUseCase getProductByIdUseCase)
     {
         _createProductUseCase = createProductUseCase;
         _getAllCatalogUseCase = getAllCatalogUseCase;
+        _getProductByIdUseCase = getProductByIdUseCase;
     }
 
     [HttpPost]
@@ -37,6 +40,13 @@ public class ProductsController : ControllerBase
     {
         var query = new GetAllCatalogQueryDto(searchTerm, categoryId, pageNumber, pageSize);
         var result = await _getAllCatalogUseCase.HandleAsync(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _getProductByIdUseCase.HandleAsync(id, cancellationToken);
         return Ok(result);
     }
 }
