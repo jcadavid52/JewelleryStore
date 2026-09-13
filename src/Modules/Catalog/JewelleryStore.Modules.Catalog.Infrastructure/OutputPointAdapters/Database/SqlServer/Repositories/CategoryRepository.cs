@@ -25,6 +25,33 @@ public class CategoryRepository : ICategoryRepository
     public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default) =>
         await _dbContext.Categories.ToListAsync(cancellationToken);
 
+    public async Task<(IEnumerable<Category> Categories, int TotalCount)> GetAllWithFiltersAsync(
+        string? searchTerm = null,
+        int pageNumber = 1,
+        int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _dbContext.Categories.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var term = searchTerm.Trim();
+            query = query.Where(c =>
+                c.Name.Contains(term) ||
+                c.Description.Contains(term));
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var categories = await query
+            .OrderBy(c => c.Name)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (categories, totalCount);
+    }
+
     public async Task<bool> ExistsByNameAsync(string name, int? exceptId = null, CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Categories.AsQueryable();
