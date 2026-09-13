@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using JewelleryStore.Modules.Catalog.Application.EntryPorts;
 using JewelleryStore.Modules.Catalog.Application.UseCases.CreateCategory;
+using JewelleryStore.Modules.Catalog.Application.UseCases.GetAllCategory;
 
 namespace JewelleryStore.Modules.Catalog.Infrastructure.EntryPointAdapters.Rest.Controllers;
 
@@ -9,10 +10,14 @@ namespace JewelleryStore.Modules.Catalog.Infrastructure.EntryPointAdapters.Rest.
 public class CategoriesController : ControllerBase
 {
     private readonly ICreateCategoryUseCase _createCategoryUseCase;
+    private readonly IGetAllCategoryUseCase _getAllCategoryUseCase;
 
-    public CategoriesController(ICreateCategoryUseCase createCategoryUseCase)
+    public CategoriesController(
+        ICreateCategoryUseCase createCategoryUseCase,
+        IGetAllCategoryUseCase getAllCategoryUseCase)
     {
         _createCategoryUseCase = createCategoryUseCase;
+        _getAllCategoryUseCase = getAllCategoryUseCase;
     }
 
     [HttpPost]
@@ -20,5 +25,17 @@ public class CategoriesController : ControllerBase
     {
         var result = await _createCategoryUseCase.HandleAsync(request, cancellationToken);
         return CreatedAtAction(nameof(Create), new { id = result.Id }, result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll(
+        [FromQuery] string? searchTerm = null,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetAllCategoryQueryDto(searchTerm, pageNumber, pageSize);
+        var result = await _getAllCategoryUseCase.HandleAsync(query, cancellationToken);
+        return Ok(result);
     }
 }
