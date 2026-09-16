@@ -8,6 +8,7 @@ namespace JewelleryStore.Modules.Inventory.Domain.Abstractions
         public Guid EventId { get; } = Guid.NewGuid();
         public DateTime OccurredOn { get; } = DateTime.UtcNow;
         public TAggregateId AggregateId { get; internal set; } = default!;
+        public long Version { get; init; }
 
         protected DomainEvent(TAggregateId aggregateId)
         {
