@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="EntryPorts\" />
+    <Folder Include="Injections\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="UseCases\GetAllStockItem\" />
+    <Folder Include="UseCases\ReceiveStockItem\" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <ProjectReference Include="..\JewelleryStore.Modules.Inventory.Domain\JewelleryStore.Modules.Inventory.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
