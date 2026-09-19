@@ -4,5 +4,5 @@ namespace JewelleryStore.Modules.Inventory.Application.EntryPorts;
 
 public interface IReserveStockItemUseCase
 {
-    Task HandleAsync(ReserveStockItemRequestDto request, CancellationToken cancellationToken = default);
+    Task<ReserveStockItemResponseDto> HandleAsync(ReserveStockItemRequestDto request, CancellationToken cancellationToken = default);
 }
