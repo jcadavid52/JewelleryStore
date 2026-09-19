@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.RateLimiting;
 using JewelleryStore.Modules.Catalog.Application.Injections;
 using JewelleryStore.Modules.Catalog.Infrastructure.Injections;
+using JewelleryStore.Modules.Inventory.Application.Injections;
+using JewelleryStore.Modules.Inventory.Infrastructure.Injections;
 using JewelleryStore.Runner.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,13 @@ builder.Services.AddCatalogPersistence(
     connectionString,
     applyMigrations: dbOptions.AutomaticMigrations,
     seedDataOnStartup: dbOptions.AutomaticSeedData);
+
+builder.Services.AddInventoryApplication();
+builder.Services.AddInventoryPersistence(
+    connectionString,
+    applyMigrations: dbOptions.AutomaticMigrations,
+    seedDataOnStartup: dbOptions.AutomaticSeedData);
+
 
 var app = builder.Build();
 
