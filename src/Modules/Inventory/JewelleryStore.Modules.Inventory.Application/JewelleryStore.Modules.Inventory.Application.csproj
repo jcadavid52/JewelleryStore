@@ -16,6 +16,7 @@
 
   <ItemGroup>
 	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+	<ProjectReference Include="..\JewelleryStore.Modules.Inventory.Contracts\JewelleryStore.Modules.Inventory.Contracts.csproj" />
     <ProjectReference Include="..\JewelleryStore.Modules.Inventory.Domain\JewelleryStore.Modules.Inventory.Domain.csproj" />
   </ItemGroup>
 
