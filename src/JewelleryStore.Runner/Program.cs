@@ -36,6 +36,7 @@ builder.Services.AddInventoryPersistence(
     connectionString,
     applyMigrations: dbOptions.AutomaticMigrations,
     seedDataOnStartup: dbOptions.AutomaticSeedData);
+builder.Services.AddInventoryEntryPoint();
 
 
 var app = builder.Build();
