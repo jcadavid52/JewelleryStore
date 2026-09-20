@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules\Catalog\JewelleryStore.Modules.Catalog.Infrastructure\JewelleryStore.Modules.Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Inventory\JewelleryStore.Modules.Inventory.Infrastructure\JewelleryStore.Modules.Inventory.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Orders\JewelleryStore.Modules.Orders.Infrastructure\JewelleryStore.Modules.Orders.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
