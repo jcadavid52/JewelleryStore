@@ -15,7 +15,7 @@
     <Folder Include="EntryPointAdapters\Rest\Controllers\" />
     <Folder Include="EntryPointAdapters\Rest\Middlewares\" />
     <Folder Include="Injections\" />
-    <Folder Include="OutputPointAdapters\Database\SqlServer\" />
+    <Folder Include="OutputPointAdapters\Database\SqlServer\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

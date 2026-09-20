@@ -46,6 +46,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Ignore(x => x.DomainEvents);
 
+        builder.Ignore(x => x.Detalles);
+
         builder.HasMany<OrderItem>("_orderItems")
             .WithOne(x => x.Order)
             .HasForeignKey(x => x.OrderId)

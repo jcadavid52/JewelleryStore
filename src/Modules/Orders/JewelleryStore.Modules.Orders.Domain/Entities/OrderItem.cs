@@ -16,6 +16,11 @@
 
         public Order Order { get; private set; } = null!;
 
+        private OrderItem()
+        {
+            // Required by EF
+        }
+
         internal OrderItem(
             Guid productId,
             int quantity,

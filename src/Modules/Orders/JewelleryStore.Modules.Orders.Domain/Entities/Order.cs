@@ -20,6 +20,11 @@ namespace JewelleryStore.Modules.Orders.Domain.Entities
 
         public IReadOnlyCollection<OrderItem> Detalles => _orderItems.AsReadOnly();
 
+        private Order()
+        {
+            // Required by EF
+        }
+
         public Order(
             Guid customerId,
             ShippingAddress shippingAddress)
