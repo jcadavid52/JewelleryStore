@@ -1,4 +1,4 @@
-﻿namespace JewelleryStore.Modules.Catalog.Domain.Abstractions
+﻿namespace JewelleryStore.Modules.Orders.Domain.Abstractions
 {
     public abstract class BaseEntity<TId> where TId : notnull
     {

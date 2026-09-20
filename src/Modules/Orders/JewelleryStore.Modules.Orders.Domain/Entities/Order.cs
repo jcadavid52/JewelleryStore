@@ -1,4 +1,4 @@
-﻿using JewelleryStore.Modules.Catalog.Domain.Abstractions;
+﻿using JewelleryStore.Modules.Orders.Domain.Abstractions;
 using JewelleryStore.Modules.Orders.Domain.Enums;
 using JewelleryStore.Modules.Orders.Domain.Exceptions;
 using JewelleryStore.Modules.Orders.Domain.ValueObjects;

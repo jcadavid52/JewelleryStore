@@ -1,4 +1,4 @@
-﻿using JewelleryStore.Modules.Catalog.Domain.Abstractions;
+﻿using JewelleryStore.Modules.Orders.Domain.Abstractions;
 
 namespace JewelleryStore.Modules.Orders.Domain.OuputPorts
 {
