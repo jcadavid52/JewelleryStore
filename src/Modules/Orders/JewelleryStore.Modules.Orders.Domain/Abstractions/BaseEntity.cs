@@ -3,6 +3,12 @@
     public abstract class BaseEntity<TId> where TId : notnull
     {
         public TId Id { get; protected set; } = default!;
+        public DateTime CreatedOn { get; }
+
+        protected BaseEntity()
+        {
+            CreatedOn = DateTime.UtcNow;
+        }
 
         public override bool Equals(object? obj)
         {
