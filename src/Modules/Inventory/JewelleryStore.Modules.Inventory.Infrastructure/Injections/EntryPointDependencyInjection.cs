@@ -9,6 +9,7 @@ namespace JewelleryStore.Modules.Inventory.Infrastructure.Injections
         public static IServiceCollection AddInventoryEntryPoint(this IServiceCollection services)
         {
             services.AddScoped<IReserveStockItemService, ReserveStockItemServiceAdapter>();
+            services.AddScoped<IReleaseStockItemService, ReleaseStockItemServiceAdapter>();
 
             return services;
         }

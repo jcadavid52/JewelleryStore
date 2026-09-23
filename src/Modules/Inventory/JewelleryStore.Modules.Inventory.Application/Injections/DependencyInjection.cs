@@ -4,6 +4,7 @@ using JewelleryStore.Modules.Inventory.Application.EntryPorts;
 using JewelleryStore.Modules.Inventory.Application.UseCases.CreateStockItem;
 using JewelleryStore.Modules.Inventory.Application.UseCases.ReceiveStockItem;
 using JewelleryStore.Modules.Inventory.Application.UseCases.ReserveStockItem;
+using JewelleryStore.Modules.Inventory.Application.UseCases.ReleaseStockItem;
 using JewelleryStore.Modules.Inventory.Application.UseCases.GetAllStockItem;
 using JewelleryStore.Modules.Inventory.Application.UseCases.GetStockItemById;
 using JewelleryStore.Modules.Inventory.Application.UseCases.GetStockItemByProductId;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<ICreateStockItemUseCase, CreateStockItemHandler>();
         services.AddScoped<IReceiveStockItemUseCase, ReceiveStockItemHandler>();
         services.AddScoped<IReserveStockItemUseCase, ReserveStockItemHandler>();
+        services.AddScoped<IReleaseStockItemUseCase, ReleaseStockItemHandler>();
         services.AddScoped<IGetStockItemByIdUseCase, GetStockItemByIdHandler>();
         services.AddScoped<IGetStockItemByProductIdUseCase, GetStockItemByProductIdHandler>();
         services.AddScoped<IGetAllStockItemUseCase, GetAllStockItemHandler>();

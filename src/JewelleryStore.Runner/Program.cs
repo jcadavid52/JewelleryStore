@@ -46,6 +46,7 @@ builder.Services.AddOrdersPersistence(
     connectionString,
     applyMigrations: dbOptions.AutomaticMigrations,
     seedDataOnStartup: dbOptions.AutomaticSeedData);
+builder.Services.AddOrdersStockReservation();
 
 
 var app = builder.Build();
