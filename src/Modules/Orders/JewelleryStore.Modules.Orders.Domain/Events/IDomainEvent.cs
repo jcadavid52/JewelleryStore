@@ -1,4 +1,4 @@
-﻿namespace JewelleryStore.Modules.Catalog.Domain.Events
+﻿namespace JewelleryStore.Modules.Orders.Domain.Events
 {
     public interface IDomainEvent
     {

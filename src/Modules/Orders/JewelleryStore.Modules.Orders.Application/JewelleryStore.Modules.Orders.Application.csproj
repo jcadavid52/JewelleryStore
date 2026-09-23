@@ -9,8 +9,14 @@
   <ItemGroup>
     <Folder Include="Injections\" />
     <Folder Include="EntryPorts\" />
-    <Folder Include="Services\" />
     <Folder Include="UseCases\" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+
+	  <ProjectReference Include="..\JewelleryStore.Modules.Orders.Domain\JewelleryStore.Modules.Orders.Domain.csproj" />
   </ItemGroup>
 
 </Project>

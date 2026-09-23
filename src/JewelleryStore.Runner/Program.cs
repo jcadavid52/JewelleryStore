@@ -3,6 +3,8 @@ using JewelleryStore.Modules.Catalog.Application.Injections;
 using JewelleryStore.Modules.Catalog.Infrastructure.Injections;
 using JewelleryStore.Modules.Inventory.Application.Injections;
 using JewelleryStore.Modules.Inventory.Infrastructure.Injections;
+using JewelleryStore.Modules.Orders.Application.Injections;
+using JewelleryStore.Modules.Orders.Infrastructure.Injections;
 using JewelleryStore.Runner.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,11 +40,20 @@ builder.Services.AddInventoryPersistence(
     seedDataOnStartup: dbOptions.AutomaticSeedData);
 builder.Services.AddInventoryEntryPoint();
 
+builder.Services.AddOrdersApplication();
+builder.Services.AddOrdersInfrastructure();
+builder.Services.AddOrdersPersistence(
+    connectionString,
+    applyMigrations: dbOptions.AutomaticMigrations,
+    seedDataOnStartup: dbOptions.AutomaticSeedData);
+builder.Services.AddOrdersStockReservation();
+
 
 var app = builder.Build();
 
 app.UseCatalogSecurity();
 app.UseCatalogExceptionHandling();
+app.UseOrdersExceptionHandling();
 app.UseCatalogRateLimiting();
 app.MapCatalogOpenApi();
 app.MapControllers().RequireRateLimiting("ApiRateLimit");

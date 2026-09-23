@@ -5,12 +5,37 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+	
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
-  <ItemGroup>
+
+	<ItemGroup>
     <Folder Include="EntryPointAdapters\Rest\Controllers\" />
     <Folder Include="EntryPointAdapters\Rest\Middlewares\" />
     <Folder Include="Injections\" />
-    <Folder Include="OutputPointAdapters\Database\SqlServer\" />
+    <Folder Include="OutputPointAdapters\Database\SqlServer\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JewelleryStore.Modules.Orders.Application\JewelleryStore.Modules.Orders.Application.csproj" />
+    <ProjectReference Include="..\..\Inventory\JewelleryStore.Modules.Inventory.Contracts\JewelleryStore.Modules.Inventory.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+		<PrivateAssets></PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
+		<PrivateAssets></PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+	<PackageReference Include="Scalar.AspNetCore" Version="2.17.2" />
   </ItemGroup>
 
 </Project>

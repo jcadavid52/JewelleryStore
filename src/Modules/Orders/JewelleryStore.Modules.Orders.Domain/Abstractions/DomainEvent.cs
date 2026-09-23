@@ -1,6 +1,6 @@
-﻿using JewelleryStore.Modules.Catalog.Domain.Events;
+﻿using JewelleryStore.Modules.Orders.Domain.Events;
 
-namespace JewelleryStore.Modules.Catalog.Domain.Abstractions
+namespace JewelleryStore.Modules.Orders.Domain.Abstractions
 {
     public abstract class DomainEvent<TAggregateId> : IDomainEvent
          where TAggregateId : notnull

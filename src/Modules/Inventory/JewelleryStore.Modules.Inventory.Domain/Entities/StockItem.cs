@@ -52,5 +52,23 @@ namespace JewelleryStore.Modules.Inventory.Domain.Entities
             AddDomainEvent(reservedStockEvent);
 
         }
+
+        public void ReleaseReservation(Quantity quantity)
+        {
+            if (quantity.IsGreaterThan(Reserved))
+            {
+                throw new InsufficientReservedStockException(ProductId, quantity.Value, Reserved.Value);
+            }
+
+            Reserved = Reserved.Subtract(quantity);
+            Available = Available.Add(quantity);
+
+            var reservationReleasedEvent = new StockReservationReleased(
+                quantity.Value,
+                ProductId,
+                Id);
+
+            AddDomainEvent(reservationReleasedEvent);
+        }
     }
 }
