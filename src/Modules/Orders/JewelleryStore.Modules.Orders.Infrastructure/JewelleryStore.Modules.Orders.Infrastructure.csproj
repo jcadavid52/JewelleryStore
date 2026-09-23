@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JewelleryStore.Modules.Orders.Application\JewelleryStore.Modules.Orders.Application.csproj" />
+    <ProjectReference Include="..\..\Inventory\JewelleryStore.Modules.Inventory.Contracts\JewelleryStore.Modules.Inventory.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
