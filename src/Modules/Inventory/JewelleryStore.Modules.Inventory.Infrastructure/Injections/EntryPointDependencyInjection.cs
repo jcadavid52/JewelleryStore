@@ -10,6 +10,7 @@ namespace JewelleryStore.Modules.Inventory.Infrastructure.Injections
         {
             services.AddScoped<IReserveStockItemService, ReserveStockItemServiceAdapter>();
             services.AddScoped<IReleaseStockItemService, ReleaseStockItemServiceAdapter>();
+            services.AddScoped<IConfirmStockItemService, ConfirmStockItemServiceAdapter>();
 
             return services;
         }
