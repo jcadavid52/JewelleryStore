@@ -6,6 +6,10 @@ public interface IStockReservationService
         StockReservationRequest request,
         CancellationToken cancellationToken = default);
 
+    Task ConfirmAsync(
+        StockConfirmationRequest request,
+        CancellationToken cancellationToken = default);
+
     Task ReleaseAsync(
         StockReleaseRequest request,
         CancellationToken cancellationToken = default);

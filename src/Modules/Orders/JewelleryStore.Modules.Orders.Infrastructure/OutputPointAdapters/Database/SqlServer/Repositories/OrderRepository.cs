@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using JewelleryStore.Modules.Orders.Domain.Entities;
 using JewelleryStore.Modules.Orders.Domain.OuputPorts;
 
@@ -13,4 +14,9 @@ public class OrderRepository : IOrderRepository
     }
 
     public void Add(Order entity) => _dbContext.Orders.Add(entity);
+
+    public async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        => await _dbContext.Orders
+            .Include("_orderItems")
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 }

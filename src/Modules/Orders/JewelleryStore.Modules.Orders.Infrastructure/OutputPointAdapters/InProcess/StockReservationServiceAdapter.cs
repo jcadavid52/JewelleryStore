@@ -1,18 +1,22 @@
 using JewelleryStore.Modules.Inventory.Contracts;
 using JewelleryStore.Modules.Orders.Application.Services;
+using JewelleryStore.Modules.Orders.Domain.Exceptions;
 
 namespace JewelleryStore.Modules.Orders.Infrastructure.OutputPointAdapters.InProcess;
 
 public sealed class StockReservationServiceAdapter : IStockReservationService
 {
     private readonly IReserveStockItemService _reserveStockItemService;
+    private readonly IConfirmStockItemService _confirmStockItemService;
     private readonly IReleaseStockItemService _releaseStockItemService;
 
     public StockReservationServiceAdapter(
         IReserveStockItemService reserveStockItemService,
+        IConfirmStockItemService confirmStockItemService,
         IReleaseStockItemService releaseStockItemService)
     {
         _reserveStockItemService = reserveStockItemService ?? throw new ArgumentNullException(nameof(reserveStockItemService));
+        _confirmStockItemService = confirmStockItemService ?? throw new ArgumentNullException(nameof(confirmStockItemService));
         _releaseStockItemService = releaseStockItemService ?? throw new ArgumentNullException(nameof(releaseStockItemService));
     }
 
@@ -29,6 +33,23 @@ public sealed class StockReservationServiceAdapter : IStockReservationService
             result.ReservedQuantity,
             result.AvailableQuantity,
             MapStatus(result.Status));
+    }
+
+    public async Task ConfirmAsync(
+        StockConfirmationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _confirmStockItemService.ConfirmAsync(
+            new ConfirmStockItemRequest(request.ProductId, request.Quantity),
+            cancellationToken);
+
+        if (result.Status != ConfirmStockStatus.Confirmed)
+        {
+            throw new StockReservationRejectedException(
+                request.ProductId,
+                request.Quantity,
+                result.ReservedQuantity);
+        }
     }
 
     public async Task ReleaseAsync(

@@ -1,5 +1,6 @@
 ﻿using JewelleryStore.Modules.Orders.Domain.Abstractions;
 using JewelleryStore.Modules.Orders.Domain.Enums;
+using JewelleryStore.Modules.Orders.Domain.Events;
 using JewelleryStore.Modules.Orders.Domain.Exceptions;
 using JewelleryStore.Modules.Orders.Domain.ValueObjects;
 
@@ -9,7 +10,7 @@ namespace JewelleryStore.Modules.Orders.Domain.Entities
     {
         public Guid CustomerId { get; private set; }
 
-        public OrderStatus OrderStatus { get; }
+        public OrderStatus OrderStatus { get; private set; }
 
         public decimal Total => _orderItems.Sum(item => item.SubTotal);
 
@@ -50,6 +51,18 @@ namespace JewelleryStore.Modules.Orders.Domain.Entities
                 Id);
 
             _orderItems.Add(orderItem);
+        }
+
+        public void Confirm()
+        {
+            if (OrderStatus != OrderStatus.Pending)
+                throw new InvalidOrderStatusException("Solo se puede confirmar un pedido pendiente.");
+
+            OrderStatus = OrderStatus.Confirmed;
+
+            var orderConfirmedEvent = new OrderConfirmed(Id);
+
+            AddDomainEvent(orderConfirmedEvent);
         }
     }
 }
