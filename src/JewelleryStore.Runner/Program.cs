@@ -42,6 +42,7 @@ builder.Services.AddInventoryEntryPoint();
 
 builder.Services.AddOrdersApplication();
 builder.Services.AddOrdersInfrastructure();
+builder.Services.AddOrdersEntryPoint();
 builder.Services.AddOrdersPersistence(
     connectionString,
     applyMigrations: dbOptions.AutomaticMigrations,
@@ -51,7 +52,7 @@ builder.Services.AddOrdersStockReservation();
 
 var app = builder.Build();
 
-app.UseCatalogSecurity();
+//app.UseCatalogSecurity();
 app.UseCatalogExceptionHandling();
 app.UseOrdersExceptionHandling();
 app.UseCatalogRateLimiting();
