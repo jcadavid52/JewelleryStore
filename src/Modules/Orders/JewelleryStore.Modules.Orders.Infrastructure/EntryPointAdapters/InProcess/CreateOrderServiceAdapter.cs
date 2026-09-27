@@ -39,7 +39,6 @@ public sealed class CreateOrderServiceAdapter : ICreateOrderService
             request.Items
                 .Select(item => new CreateOrderItemDto(
                     item.ProductId,
-                    item.Quantity,
-                    item.UnitPrice))
+                    item.Quantity))
                 .ToArray());
 }
