@@ -64,5 +64,17 @@ namespace JewelleryStore.Modules.Orders.Domain.Entities
 
             AddDomainEvent(orderConfirmedEvent);
         }
+
+        public void Cancel()
+        {
+            if (OrderStatus != OrderStatus.Pending)
+                throw new InvalidOrderStatusException("Solo se puede cancelar un pedido pendiente.");
+
+            OrderStatus = OrderStatus.Cancelled;
+
+            var orderCancelledEvent = new OrderCancelled(Id);
+
+            AddDomainEvent(orderCancelledEvent);
+        }
     }
 }

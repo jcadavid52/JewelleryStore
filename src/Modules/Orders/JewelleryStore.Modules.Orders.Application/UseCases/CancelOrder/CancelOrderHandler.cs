@@ -3,22 +3,21 @@ using JewelleryStore.Modules.Orders.Application.EntryPorts;
 using JewelleryStore.Modules.Orders.Application.Services;
 using JewelleryStore.Modules.Orders.Domain.Exceptions;
 using JewelleryStore.Modules.Orders.Domain.OuputPorts;
+using Microsoft.Extensions.Logging;
 
-namespace JewelleryStore.Modules.Orders.Application.UseCases.ConfirmOrder;
+namespace JewelleryStore.Modules.Orders.Application.UseCases.CancelOrder;
 
-public class ConfirmOrderHandler : IConfirmOrderUseCase
+public class CancelOrderHandler : ICancelOrderUseCase
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IStockReservationService _stockReservationService;
-    private readonly IValidator<ConfirmOrderRequestDto> _validator;
+    private readonly IValidator<CancelOrderRequestDto> _validator;
     private readonly IUnitOfWork _unitOfWork;
-
-    public ConfirmOrderHandler(
+    public CancelOrderHandler(
         IOrderRepository orderRepository,
         IStockReservationService stockReservationService,
-        IValidator<ConfirmOrderRequestDto> validator,
-        IUnitOfWork unitOfWork
-    )
+        IValidator<CancelOrderRequestDto> validator,
+        IUnitOfWork unitOfWork)
     {
         _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         _stockReservationService = stockReservationService ?? throw new ArgumentNullException(nameof(stockReservationService));
@@ -26,7 +25,7 @@ public class ConfirmOrderHandler : IConfirmOrderUseCase
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
-    public async Task<ConfirmOrderResponseDto> HandleAsync(ConfirmOrderRequestDto request, CancellationToken cancellationToken = default)
+    public async Task<CancelOrderResponseDto> HandleAsync(CancelOrderRequestDto request, CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
@@ -35,17 +34,17 @@ public class ConfirmOrderHandler : IConfirmOrderUseCase
         var order = await _orderRepository.GetByIdAsync(request.OrderId, cancellationToken)
             ?? throw new OrderNotFoundException(request.OrderId);
 
-        order.Confirm();
+        order.Cancel();
 
         foreach (var item in order.Detalles)
         {
-            await _stockReservationService.ConfirmAsync(
-                new StockConfirmationRequest(item.ProductId, item.Quantity),
+            await _stockReservationService.ReleaseAsync(
+                new StockReleaseRequest(item.ProductId, item.Quantity),
                 cancellationToken);
         }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new ConfirmOrderResponseDto(order.Id, order.OrderStatus);
+        return new CancelOrderResponseDto(order.Id, order.OrderStatus);
     }
 }
