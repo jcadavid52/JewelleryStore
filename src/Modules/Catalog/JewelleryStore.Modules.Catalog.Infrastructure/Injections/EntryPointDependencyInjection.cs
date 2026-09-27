@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Scalar.AspNetCore;
+using JewelleryStore.Modules.Catalog.Contracts;
+using JewelleryStore.Modules.Catalog.Infrastructure.EntryPointAdapters.InProcess;
 using JewelleryStore.Modules.Catalog.Infrastructure.EntryPointAdapters.Rest.Middlewares;
 
 namespace JewelleryStore.Modules.Catalog.Infrastructure.Injections;
@@ -18,6 +20,13 @@ public static class EntryPointDependencyInjection
     {
         services.AddControllers()
             .AddApplicationPart(typeof(EntryPointDependencyInjection).Assembly);
+
+        return services;
+    }
+
+    public static IServiceCollection AddCatalogEntryPoint(this IServiceCollection services)
+    {
+        services.AddScoped<IGetProductsByIdsService, GetProductsByIdsServiceAdapter>();
 
         return services;
     }

@@ -9,6 +9,7 @@ using JewelleryStore.Modules.Catalog.Application.UseCases.GetAllCatalog;
 using JewelleryStore.Modules.Catalog.Application.UseCases.GetAllCategory;
 using JewelleryStore.Modules.Catalog.Application.UseCases.GetProductById;
 using JewelleryStore.Modules.Catalog.Application.UseCases.GetCategoryById;
+using JewelleryStore.Modules.Catalog.Application.UseCases.GetProductsByIds;
 
 namespace JewelleryStore.Modules.Catalog.Application.Injections;
 
@@ -24,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<IUpdateProductUseCase, UpdateProductHandler>();
         services.AddScoped<IGetAllCatalogUseCase, GetAllCatalogHandler>();
         services.AddScoped<IGetProductByIdUseCase, GetProductByIdHandler>();
+        services.AddScoped<IGetProductsByIdsUseCase, GetProductsByIdsHandler>();
 
         services.AddValidatorsFromAssemblyContaining<CreateProductRequestDtoValidator>();
 
