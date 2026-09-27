@@ -22,6 +22,7 @@ var connectionString = builder.Configuration.GetConnectionString("Connection")
 
 builder.Services.AddCatalogApplication();
 builder.Services.AddCatalogInfrastructure();
+builder.Services.AddCatalogEntryPoint();
 builder.Services.AddCatalogOpenApi();
 builder.Services.AddCatalogRateLimiting(
     rateLimitingOptions.Enabled,

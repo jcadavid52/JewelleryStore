@@ -52,6 +52,13 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
        await _dbContext.Products.FindAsync(new object[] { id }, cancellationToken);
 
+    public async Task<IEnumerable<Product>> GetByIdsAsync(
+        IReadOnlyCollection<Guid> ids,
+        CancellationToken cancellationToken = default) =>
+        await _dbContext.Products
+            .Where(p => ids.Contains(p.Id))
+            .ToListAsync(cancellationToken);
+
     public async Task<Product?> GetByIdWithCategoryAsync(Guid id, CancellationToken cancellationToken = default) =>
         await _dbContext.Products
             .Include(p => p.Category)

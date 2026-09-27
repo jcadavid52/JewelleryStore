@@ -6,6 +6,10 @@ namespace JewelleryStore.Modules.Catalog.Domain.OuputPorts
     {
         Task<Product?> GetByIdWithCategoryAsync(Guid id, CancellationToken cancellationToken = default);
 
+        Task<IEnumerable<Product>> GetByIdsAsync(
+            IReadOnlyCollection<Guid> ids,
+            CancellationToken cancellationToken = default);
+
         Task<(IEnumerable<Product> Products, int TotalCount)> GetAllWithFiltersAsync(
             string? searchTerm = null,
             int? categoryId = null,

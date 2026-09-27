@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JewelleryStore.Modules.Catalog.Application\JewelleryStore.Modules.Catalog.Application.csproj" />
+    <ProjectReference Include="..\JewelleryStore.Modules.Catalog.Contracts\JewelleryStore.Modules.Catalog.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
