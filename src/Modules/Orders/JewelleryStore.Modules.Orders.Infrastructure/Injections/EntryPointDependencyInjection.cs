@@ -26,6 +26,7 @@ public static class EntryPointDependencyInjection
 
     public static IServiceCollection AddOrdersEntryPoint(this IServiceCollection services)
     {
+        services.AddScoped<ICreateOrderService, CreateOrderServiceAdapter>();
         services.AddScoped<IConfirmOrderService, ConfirmOrderServiceAdapter>();
         services.AddScoped<ICancelOrderService, CancelOrderServiceAdapter>();
 
