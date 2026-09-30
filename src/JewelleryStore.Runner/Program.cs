@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.RateLimiting;
 using JewelleryStore.Modules.Catalog.Application.Injections;
 using JewelleryStore.Modules.Catalog.Infrastructure.Injections;
+using JewelleryStore.Modules.Checkout.Injections;
 using JewelleryStore.Modules.Inventory.Application.Injections;
 using JewelleryStore.Modules.Inventory.Infrastructure.Injections;
 using JewelleryStore.Modules.Orders.Application.Injections;
@@ -49,6 +50,10 @@ builder.Services.AddOrdersPersistence(
     applyMigrations: dbOptions.AutomaticMigrations,
     seedDataOnStartup: dbOptions.AutomaticSeedData);
 builder.Services.AddOrdersStockReservation();
+builder.Services.AddOrdersCatalogPricing();
+
+builder.Services.AddCheckout(builder.Configuration);
+builder.Services.AddCheckoutInfrastructure();
 
 
 var app = builder.Build();
@@ -56,6 +61,7 @@ var app = builder.Build();
 //app.UseCatalogSecurity();
 app.UseCatalogExceptionHandling();
 app.UseOrdersExceptionHandling();
+app.UseCheckoutExceptionHandling();
 app.UseCatalogRateLimiting();
 app.MapCatalogOpenApi();
 app.MapControllers().RequireRateLimiting("ApiRateLimit");
