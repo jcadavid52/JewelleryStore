@@ -13,6 +13,7 @@ public class CreateOrderHandler : ICreateOrderUseCase
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IStockReservationService _stockReservationService;
+    private readonly ICatalogPricingService _catalogPricingService;
     private readonly IValidator<CreateOrderRequestDto> _validator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateOrderHandler> _logger;
@@ -20,12 +21,14 @@ public class CreateOrderHandler : ICreateOrderUseCase
     public CreateOrderHandler(
         IOrderRepository orderRepository,
         IStockReservationService stockReservationService,
+        ICatalogPricingService catalogPricingService,
         IValidator<CreateOrderRequestDto> validator,
         IUnitOfWork unitOfWork,
         ILogger<CreateOrderHandler> logger)
     {
         _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
         _stockReservationService = stockReservationService ?? throw new ArgumentNullException(nameof(stockReservationService));
+        _catalogPricingService = catalogPricingService ?? throw new ArgumentNullException(nameof(catalogPricingService));
         _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -36,6 +39,8 @@ public class CreateOrderHandler : ICreateOrderUseCase
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw validationResult.ToRequestValidationException();
+
+        var unitPrices = await ResolveCatalogPricesAsync(request, cancellationToken);
 
         var reservedItems = new List<CreateOrderItemDto>();
 
@@ -65,7 +70,7 @@ public class CreateOrderHandler : ICreateOrderUseCase
                     request.ShippingAddress.Phone));
 
             foreach (var item in request.Items)
-                order.AddOrderItem(item.ProductId, item.Quantity, item.UnitPrice);
+                order.AddOrderItem(item.ProductId, item.Quantity, unitPrices[item.ProductId]);
 
             _orderRepository.Add(order);
 
@@ -93,6 +98,33 @@ public class CreateOrderHandler : ICreateOrderUseCase
         }
     }
 
+    private async Task<IReadOnlyDictionary<Guid, decimal>> ResolveCatalogPricesAsync(
+        CreateOrderRequestDto request,
+        CancellationToken cancellationToken)
+    {
+        var productIds = request.Items
+            .Select(item => item.ProductId)
+            .Distinct()
+            .ToArray();
+
+        var catalogItems = await _catalogPricingService.GetByIdsAsync(productIds, cancellationToken);
+
+        var foundProductIds = catalogItems
+            .Select(item => item.ProductId)
+            .ToHashSet();
+
+        var missingProductIds = productIds
+            .Where(id => !foundProductIds.Contains(id))
+            .ToArray();
+
+        if (missingProductIds.Length > 0)
+            throw new CatalogProductNotFoundException(missingProductIds);
+
+        return catalogItems.ToDictionary(
+            item => item.ProductId,
+            item => item.UnitPrice);
+    }
+
     private async Task CompensateAsync(IReadOnlyCollection<CreateOrderItemDto> reservedItems, CancellationToken cancellationToken)
     {
         foreach (var item in reservedItems)
@@ -107,7 +139,7 @@ public class CreateOrderHandler : ICreateOrderUseCase
             {
                 _logger.LogError(
                     exception,
-                    "Falló la compensación de la reserva para el producto {ProductId} x {Quantity}",
+                    "Fallo la compensaci�n de la reserva para el producto {ProductId} x {Quantity}",
                     item.ProductId,
                     item.Quantity);
             }

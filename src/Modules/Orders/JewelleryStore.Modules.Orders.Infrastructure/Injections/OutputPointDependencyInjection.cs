@@ -40,4 +40,11 @@ public static class OutputPointDependencyInjection
 
         return services;
     }
+
+    public static IServiceCollection AddOrdersCatalogPricing(this IServiceCollection services)
+    {
+        services.AddScoped<ICatalogPricingService, CatalogPricingServiceAdapter>();
+
+        return services;
+    }
 }

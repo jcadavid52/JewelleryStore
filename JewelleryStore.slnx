@@ -10,6 +10,9 @@
     <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Domain/JewelleryStore.Modules.Catalog.Domain.csproj" Id="c1b0d0fd-6b3c-4044-b6bb-8cd982ae1b28" />
     <Project Path="src/Modules/Catalog/JewelleryStore.Modules.Catalog.Infrastructure/JewelleryStore.Modules.Catalog.Infrastructure.csproj" Id="005a1095-01e6-4fb5-bce5-e369d7d2f3bc" />
   </Folder>
+  <Folder Name="/src/Modules/Checkout/">
+    <Project Path="src/Modules/Checkout/JewelleryStore.Modules.Checkout/JewelleryStore.Modules.Checkout.csproj" Id="7c1bbd1e-4a6f-4c2e-9d2a-b8a04f6e8f71" />
+  </Folder>
   <Folder Name="/src/Modules/Inventory/">
     <Project Path="src/Modules/Inventory/JewelleryStore.Modules.Inventory.Contracts/JewelleryStore.Modules.Inventory.Contracts.csproj" Id="3d7a54c1-9e2b-4f8a-8c05-b6d2e14a7f93" />
     <Project Path="src/Modules/Inventory/JewelleryStore.Modules.Inventory.Application/JewelleryStore.Modules.Inventory.Application.csproj" Id="92ab818c-b467-424b-b91a-a1bc2a45a1c7" />

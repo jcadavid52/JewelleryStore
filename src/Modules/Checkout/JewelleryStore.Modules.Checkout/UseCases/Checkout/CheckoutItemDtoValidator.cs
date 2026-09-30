@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace JewelleryStore.Modules.Orders.Application.UseCases.CreateOrder;
+namespace JewelleryStore.Modules.Checkout.UseCases.Checkout;
 
-public class CreateOrderItemDtoValidator : AbstractValidator<CreateOrderItemDto>
+public class CheckoutItemDtoValidator : AbstractValidator<CheckoutItemDto>
 {
-    public CreateOrderItemDtoValidator()
+    public CheckoutItemDtoValidator()
     {
         RuleFor(x => x.ProductId)
             .NotEmpty().WithMessage("El id del producto es obligatorio");
