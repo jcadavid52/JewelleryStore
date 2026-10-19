@@ -3,4 +3,5 @@ namespace JewelleryStore.Modules.Checkout.Services;
 public record PaymentResult(
     PaymentStatus Status,
     string TransactionId,
-    string Detail);
+    string Detail,
+    string ClientSecret);

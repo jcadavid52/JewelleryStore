@@ -39,7 +39,7 @@ public class CheckoutHandler : ICheckoutUseCase
             throw validationResult.ToRequestValidationException();
 
         var order = await _createOrderService.CreateAsync(
-            new CreateOrderRequest(
+            new Orders.Contracts.CreateOrderRequest(
                 request.CustomerId,
                 new CreateOrderShippingAddressRequest(
                     request.ShippingAddress.Address,
