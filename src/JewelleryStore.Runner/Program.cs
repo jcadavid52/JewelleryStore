@@ -18,6 +18,10 @@ var rateLimitingOptions = builder.Configuration
     .GetSection(RateLimitingOptions.SectionName)
     .Get<RateLimitingOptions>() ?? new RateLimitingOptions();
 
+var paymentOptions = builder.Configuration
+    .GetSection(PaymentOptions.SectionName)
+    .Get<PaymentOptions>() ?? new PaymentOptions();
+
 var connectionString = builder.Configuration.GetConnectionString("Connection")
     ?? throw new InvalidOperationException("Connection string 'Connection' no configurada.");
 
@@ -52,8 +56,16 @@ builder.Services.AddOrdersPersistence(
 builder.Services.AddOrdersStockReservation();
 builder.Services.AddOrdersCatalogPricing();
 
-builder.Services.AddCheckout(builder.Configuration);
+builder.Services.AddCheckout(builder.Configuration,paymentOptions.SecretKey);
 builder.Services.AddCheckoutInfrastructure();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Angular", policy => policy
+        .WithOrigins("http://localhost:4200")
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
 
 
 var app = builder.Build();
@@ -65,6 +77,7 @@ app.UseCheckoutExceptionHandling();
 app.UseCatalogRateLimiting();
 app.MapCatalogOpenApi();
 app.MapControllers().RequireRateLimiting("ApiRateLimit");
+app.UseCors("Angular");
 
 app.MapGet("/", () => "Hello World!");
 
